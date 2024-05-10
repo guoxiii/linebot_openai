@@ -193,16 +193,24 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text
+    msg = event.message.text.strip()
+
     try:
-        if msg[0] == '/':
-            GPT_answer = chat(sys_msg, msg[1:]) # GPT_response(msg)
-            print(GPT_answer)
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+        if len(msg) == 0:
+            pass
+        elif event.source.type == "group" and msg[0] != '/':
+            pass
+        else:
+            if event.source.type == "group":
+                msg = msg[1:]
+
+            if len(msg) > 0:
+                GPT_answer = chat(sys_msg, msg) # GPT_response(msg)
+                print(GPT_answer)
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
         print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
-        
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('智能客服目前無法回答您的問題，稍後將由客服人員回覆'))        
 
 @handler.add(PostbackEvent)
 def handle_message(event):
