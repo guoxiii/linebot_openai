@@ -31,7 +31,7 @@ sys_msg = "蓓樂膚智能客服"
 client = openai.OpenAI(api_key = os.getenv('OPENAI_API_KEY'))
 
 service_data = '''
-以下資料，標題是客問題，摘要是答案：
+以下資料，標題是問題，摘要是答案：
 標題：產品有做動物實驗嗎
 摘要：我們全品項保養都為無動物實驗，因此對於健康與環境都是友善的
 標題：素食者可以使用嗎
