@@ -134,7 +134,7 @@ service_data = '''
 摘要：退貨的商品須保持完整的包裝狀態(包括外盒、配件、內包裝等)，請勿拆封使用過，並連同贈品、發票一併寄回，否則將影響退貨權益
 
 你只能依照上述摘要內容
-如果上述摘要找不到答案，請回答：無法確認您的問題答案，請稍候上班後將由客服人員回覆。
+如果上述摘要找不到答案，請回答：無法確認您的問題答案，上班後將由客服人員回覆。
 你必須簡短的回答以下問題
 '''
 
@@ -195,9 +195,10 @@ def callback():
 def handle_message(event):
     msg = event.message.text
     try:
-        GPT_answer = chat(sys_msg, msg) # GPT_response(msg)
-        print(GPT_answer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+        if msg[0] == '/':
+            GPT_answer = chat(sys_msg, msg[1:]) # GPT_response(msg)
+            print(GPT_answer)
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
         print(traceback.format_exc())
         line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
