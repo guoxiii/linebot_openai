@@ -184,8 +184,8 @@ def callback():
     app.logger.info("Request body: " + body)
     # handle webhook body
     try:
-        if body[0] == '/':
-            handler.handle(body[1:], signature)
+        if str(body)[0] == '/':
+            handler.handle(str(body)[1:], signature)
     except InvalidSignatureError:
         abort(400)
     return 'OK'
