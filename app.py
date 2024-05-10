@@ -133,7 +133,9 @@ service_data = '''
 標題：退貨的商品狀態須如何
 摘要：退貨的商品須保持完整的包裝狀態(包括外盒、配件、內包裝等)，請勿拆封使用過，並連同贈品、發票一併寄回，否則將影響退貨權益
 
-你只能依照上述摘要內容，盡量簡短的回答以下問題
+你只能依照上述摘要內容
+如果上述摘要找不到答案，請回答：無法確認您的問題答案，請稍候上班後將由客服人員回覆。
+你必須簡短的回答以下問題
 '''
 
 hist = []
@@ -161,7 +163,7 @@ def chat(sys_msg, user_msg):
     hist = hist[-2 * backtrace:]
     return reply
 
-
+"""
 def GPT_response(text):
     # 接收回應
     response = openai.Completion.create(model="gpt-3.5-turbo-instruct", prompt=text, temperature=0.5, max_tokens=500)
@@ -169,6 +171,7 @@ def GPT_response(text):
     # 重組回應
     answer = response['choices'][0]['text'].replace('。','')
     return answer
+"""
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -194,7 +197,7 @@ def handle_message(event):
     try:
         GPT_answer = chat(sys_msg, msg) # GPT_response(msg)
         print(GPT_answer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(f"X: {GPT_answer}"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
         print(traceback.format_exc())
         line_bot_api.reply_message(event.reply_token, TextSendMessage('你所使用的OPENAI API key額度可能已經超過，請於後台Log內確認錯誤訊息'))
