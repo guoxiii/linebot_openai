@@ -56,6 +56,8 @@ def get_reply(messages):
 def chat(sys_msg, user_msg):
     qa = requests.get(qa_url)
 
+    print(f"qa.status_code = {qa.status_code}")
+
     if qa.status_code == 200:
         global hist        
         hist.append({"role": "user", "content": user_msg})
@@ -115,7 +117,7 @@ def handle_message(event):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
     except:
         print(traceback.format_exc())
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('智能客服目前無法回答您的問題，稍後將由客服人員回覆'))        
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(qa_no_data))        
 
 @handler.add(PostbackEvent)
 def handle_message(event):
